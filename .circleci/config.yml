@@ -86,7 +86,7 @@ jobs:
       - run: cargo fmt -- --check
       - run:
           name: Build and test
-          command: RUST_MIN_STACK=8388608 cargo test --all -- --skip dpc --skip dpc_integration_test --skip startup_handshake_stored_peers
+          command: RUST_MIN_STACK=8388608 cargo test --all --
       - clear_environment:
           cache_key: snark-cache-nighty
 workflows:
