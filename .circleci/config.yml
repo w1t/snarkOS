@@ -50,7 +50,7 @@ jobs:
           name: Build and run tests
           command: >
             cargo test --all -- --skip dpc
-            --skip dpc_integration_test --skip startup_handshake_stored_peers --verbose
+            --skip dpc_integration_test --skip startup_handshake_stored_peers
       - persist_to_workspace:
           root: ~/
           paths: project/
