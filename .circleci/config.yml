@@ -37,7 +37,7 @@ commands:
             - .cache/sccache
             - .cargo
 jobs:
-  analyse_and_store_coverage:
+  rust_stable:
     machine:
       image: ubuntu-1604:202004-01
       docker_layer_caching: true
@@ -79,6 +79,3 @@ workflows:
     jobs:
       - rust_stable
       - rust_nightly
-      - analyse_and_store_coverage:
-          requires:
-            - rust_stable
