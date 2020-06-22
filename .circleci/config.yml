@@ -43,19 +43,18 @@ jobs:
       docker_layer_caching: true
     resource_class: xlarge
     steps:
-      - attach_workspace:
-          at: /home/circleci/project/
+      - checkout
       - run:
           name: Run kcov
           command: >
-            docker run -v ~/project/project/:/home/circleci/project/
-            cimg/rust:1.43.0
+            docker run -v ~/project/:/home/circleci/project/
+            daniilr/rust:1.43.0
             bash /home/circleci/project/ci/run-tests.sh
       - run:
           name: Run kcov
           command: >
             cd ~/project/project/ &&
-            docker run --security-opt seccomp=unconfined -v ~/project/project/:/home/circleci/project/
+            docker run --security-opt seccomp=unconfined -v ~/project/:/home/circleci/project/
             daniilr/kcov bash /home/circleci/project/ci/kcov.sh
       - run: cd ./project/ && bash <(curl -s https://codecov.io/bash)
   rust_nightly:
