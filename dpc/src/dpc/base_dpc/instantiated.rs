@@ -37,6 +37,7 @@ use snarkos_gadgets::{
     },
     curves::{bls12_377::PairingGadget, edwards_bls12::EdwardsBlsGadget, edwards_sw6::EdwardsSWGadget},
 };
+use snarkos_marlin::snark::MarlinSnark;
 use snarkos_models::dpc::DPCComponents;
 
 use blake2::Blake2s as Blake2sHash;
@@ -186,8 +187,8 @@ pub type SerialNumberNonce = BoweHopwoodPedersenCompressedCRH<EdwardsBls, SnNonc
 pub type PredicateVerificationKeyHash = BoweHopwoodPedersenCompressedCRH<EdwardsSW, PredVkHashWindow>;
 
 pub type Predicate = DPCPredicate<Components>;
-pub type CoreCheckNIZK = Groth16<InnerPairing, InnerCircuit<Components>, InnerCircuitVerifierInput<Components>>;
-pub type ProofCheckNIZK = Groth16<OuterPairing, OuterCircuit<Components>, OuterCircuitVerifierInput<Components>>;
+pub type CoreCheckNIZK = MarlinSnark<InnerPairing, InnerCircuit<Components>, InnerCircuitVerifierInput<Components>>;
+pub type ProofCheckNIZK = MarlinSnark<OuterPairing, OuterCircuit<Components>, OuterCircuitVerifierInput<Components>>;
 pub type PredicateSNARK<C> = GM17<InnerPairing, PredicateCircuit<C>, PredicateLocalData<C>>;
 pub type PRF = Blake2s;
 
