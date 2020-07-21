@@ -2343,6 +2343,7 @@ dependencies = [
  "snarkos-curves",
  "snarkos-errors",
  "snarkos-gadgets",
+ "snarkos-marlin",
  "snarkos-models",
  "snarkos-objects",
  "snarkos-parameters",
