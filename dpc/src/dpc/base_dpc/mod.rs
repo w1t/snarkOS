@@ -8,6 +8,7 @@ use snarkos_algorithms::{
     merkle_tree::{MerklePath, MerkleTreeDigest},
 };
 use snarkos_errors::dpc::DPCError;
+use snarkos_marlin::snark::SRS;
 use snarkos_models::{
     algorithms::{
         CommitmentScheme,
@@ -118,7 +119,10 @@ pub trait BaseDPCComponents: DPCComponents {
 
     /// SNARK for proof-verification checks
     type OuterSNARK: SNARK<
-        Circuit = OuterCircuit<Self>,
+        Circuit = (
+            OuterCircuit<Self>,
+            SRS<crate::dpc::base_dpc::instantiated::OuterPairing>,
+        ),
         AssignedCircuit = OuterCircuit<Self>,
         VerifierInput = OuterCircuitVerifierInput<Self>,
     >;
@@ -630,16 +634,22 @@ where
             rng,
         )?;
 
-        let outer_snark_parameters = Components::OuterSNARK::setup(
-            OuterCircuit::blank(
-                &circuit_parameters,
-                ledger_parameters,
-                &inner_snark_vk,
-                &inner_snark_proof,
-                &private_pred_input,
-            ),
-            rng,
-        )?;
+        // run the trusted setup
+        println!("RUNNING UNIVERSAL SETUP");
+        let universal_srs =
+            snarkos_marlin::snark::Marlin::<crate::base_dpc::instantiated::OuterPairing>::universal_setup(
+                5600000, 5600000, 5600000, rng,
+            )
+            .unwrap();
+        let outer_circuit = OuterCircuit::blank(
+            &circuit_parameters,
+            ledger_parameters,
+            &inner_snark_vk,
+            &inner_snark_proof,
+            &private_pred_input,
+        );
+        println!("FINISHED UNIVERSAL SETUP");
+        let outer_snark_parameters = Components::OuterSNARK::setup((outer_circuit, universal_srs), rng)?;
         end_timer!(snark_setup_time);
         end_timer!(setup_time);
 

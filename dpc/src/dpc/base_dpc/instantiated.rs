@@ -188,7 +188,8 @@ pub type PredicateVerificationKeyHash = BoweHopwoodPedersenCompressedCRH<Edwards
 
 pub type Predicate = DPCPredicate<Components>;
 pub type CoreCheckNIZK = Groth16<InnerPairing, InnerCircuit<Components>, InnerCircuitVerifierInput<Components>>;
-pub type ProofCheckNIZK = MarlinSnark<OuterPairing, OuterCircuit<Components>, OuterCircuitVerifierInput<Components>>;
+pub type ProofCheckNIZK =
+    MarlinSnark<'static, OuterPairing, OuterCircuit<Components>, OuterCircuitVerifierInput<Components>>;
 pub type PredicateSNARK<C> = GM17<InnerPairing, PredicateCircuit<C>, PredicateLocalData<C>>;
 pub type PRF = Blake2s;
 
