@@ -115,7 +115,7 @@ pub fn create_dummy_transaction<R: Rng>(
 
     let mut path = std::env::current_dir()?;
     path.push(format!("storage_db_{}", random_path));
-            
+
     let ledger = MerkleTreeLedger::open_at_path(&path).unwrap();
 
     let (transaction, new_records) = delegate_transaction(execute_context, &ledger, rng)?;
